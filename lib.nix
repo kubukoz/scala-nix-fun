@@ -2,6 +2,12 @@ final: prev:
 let
   pkgs = prev;
 
+  scala-library = pkgs.runCommand "scala-library-${pkgs.scala.version}" { } ''
+    mkdir -p $out/share/java
+    cp ${pkgs.scala}/lib/scala-library.jar $out/share/java/scala-library.jar
+  '';
+
+
   mkScalacDerivation =
     { pname
     , version
@@ -26,11 +32,6 @@ let
         else [ path ];
 
       params = scalacOptions ++ builtins.map (p: "-Xplugin:${p}/share/java/${p.pname}.jar") compilerPlugins;
-
-      scala-library = pkgs.runCommand "scala-library-${pkgs.scala.version}" { } ''
-        mkdir -p $out/share/java
-        cp ${pkgs.scala}/lib/scala-library.jar $out/share/java/scala-library.jar
-      '';
 
       finalArgs = {
         name = "${pname}-${version}";
@@ -107,7 +108,7 @@ let
         inherit url sha256;
       };
       buildInputs = [ pkgs.jre ];
-      inherit propagatedBuildInputs;
+      propagatedBuildInputs = propagatedBuildInputs ++ [ scala-library ];
       buildPhase = ''
         mkdir -p $out/share/java
         cp $src $out/share/java/$pname.jar

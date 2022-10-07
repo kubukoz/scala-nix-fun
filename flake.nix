@@ -1,14 +1,19 @@
 {
   inputs.nixpkgs.url = "github:nixos/nixpkgs";
   inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.smithy4s-nix.url = "github:kubukoz/smithy4s-nix";
+  inputs.smithy4s-nix.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.smithy4s-nix.inputs.flake-utils.follows = "flake-utils";
 
-  outputs = { self, nixpkgs, flake-utils, ... }@inputs:
+  outputs = { self, nixpkgs, flake-utils, smithy4s-nix, ... }@inputs:
     flake-utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ] (
       system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ (import ./lib.nix) ];
+          overlays = [
+            (import ./lib.nix)
+          ];
         };
 
         sbt-typelevel-defaults = {
@@ -215,6 +220,23 @@
                 compilerPlugins = [ registry.typelevel.kind-projector ];
               };
             };
+          scala.collection-compat.binary = pkgs.scala-tools.fetchMavenArtifact {
+            version = "2.8.1";
+            pname = "scala-collection-compat";
+            artifact = "scala-collection-compat_2.13";
+            org = [ "org" "scala-lang" "modules" ];
+            sha256 = "sha256:1704dq8x3agad1rv1i72fy3zwmfnk4j3hl0rfpz16n5bil1cd34v";
+          };
+          smithy4s.core.binary = pkgs.scala-tools.fetchMavenArtifact {
+            version = "0.16.2";
+            pname = "smithy4s-core";
+            artifact = "smithy4s-core_2.13";
+            org = [ "com" "disneystreaming" "smithy4s" ];
+            sha256 = "sha256:0lgx2xqlhm3zs8ildcn9c31ynj7dfqyrccnd44zc6ybxs8l5hk3d";
+            propagatedBuildInputs = [
+              registry.scala.collection-compat.binary
+            ];
+          };
         };
 
       in
@@ -224,11 +246,20 @@
             pname = "example";
             version = "0.0.0";
             src = ./example/src;
-            sourceDirectories = [ "." ];
-            buildInputs = [
-              registry.polyvariant.colorize-scala
-              registry.typelevel.cats-effect.core
+            sourceDirectories = [
+              "."
+              (smithy4s-nix.lib.${system}.smithy4sGenerate {
+                pname = "smithy-sources";
+                version = "0.0.0";
+                specs = [ ./example/smithy ];
+              })
             ];
+            buildInputs =
+              [
+                registry.polyvariant.colorize-scala
+                registry.typelevel.cats-effect.core
+                registry.smithy4s.core.binary
+              ];
           };
           mainClass = "example.Main";
         };

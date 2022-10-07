@@ -6,7 +6,8 @@ import cats.effect._
 
 object Main extends IOApp.Simple {
   def run = {
-    IO.println(colorize"hello".red.render) *>
-      IO.println(1 |+| 10)
+    IO.println(colorize"hello there".red.render) *>
+      IO.println(1 |+| 10) *>
+      IO.println(hello.Hello())
   }
 }
