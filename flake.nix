@@ -178,12 +178,12 @@
 
           typelevel.cats-effect =
             let
-              version = "3.3.14";
+              version = "3.4.0-RC1";
               src = pkgs.fetchFromGitHub {
                 owner = "typelevel";
                 repo = "cats-effect";
                 rev = "v${version}";
-                sha256 = "sha256-AYZSfSHEZCeADR1e/oSbP26CWC6KG0T9XD1yhGT9ITY=";
+                sha256 = "sha256-KMkTrpzLgZVh72HWW+D9/v/FSvx2QV2CGJ+5Prm/j/M=";
               };
             in
             rec {
@@ -192,7 +192,9 @@
                 inherit version src;
                 sourceDirectories = [
                   "kernel/jvm/src/main/scala"
+                  "kernel/jvm-native/src/main/scala"
                   "kernel/shared/src/main/scala"
+                  "kernel/shared/src/main/scala-2.13"
                 ];
                 buildInputs = [ registry.typelevel.cats-core.fromSource ];
                 compilerPlugins = [ registry.typelevel.kind-projector ];
@@ -202,6 +204,7 @@
                 inherit version src;
                 sourceDirectories = [
                   "std/jvm/src/main/scala"
+                  "std/jvm-native/src/main/scala"
                   "std/shared/src/main/scala"
                 ];
                 buildInputs = [ kernel ];
@@ -213,8 +216,8 @@
                 sourceDirectories = [
                   "core/jvm/src/main/java"
                   "core/jvm/src/main/scala"
+                  "core/jvm-native/src/main/scala"
                   "core/shared/src/main/scala"
-                  "core/shared/src/main/scala-2"
                 ];
                 buildInputs = [ kernel std ];
                 compilerPlugins = [ registry.typelevel.kind-projector ];
