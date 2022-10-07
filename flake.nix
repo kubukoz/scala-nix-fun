@@ -219,8 +219,7 @@
 
       in
       {
-        packages.default = registry.typelevel.cats-effect.core;
-        packages.default2 = pkgs.scala-tools.mkScalaApp {
+        packages.default = pkgs.scala-tools.mkScalaApp {
           package = pkgs.scala-tools.mkScalacDerivation {
             pname = "example";
             version = "0.0.0";
