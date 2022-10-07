@@ -145,35 +145,82 @@
                     "core/src/main/scala-2.13+"
                     boiler
                   ];
-                  scalacOptions = sbt-typelevel-defaults."2.13" ++ [
-                    "-Xplugin:${registry.typelevel.kind-projector}/share/java/kind-projector.jar"
-                  ];
+                  scalacOptions = sbt-typelevel-defaults."2.13";
+                  compilerPlugins = [ registry.typelevel.kind-projector ];
                   buildInputs = [ registry.typelevel.cats-kernel ];
                 };
             in
             { inherit binary fromSource; };
 
-          typelevel.kind-projector = pkgs.scala-tools.mkScalacDerivation {
-            pname = "kind-projector";
-            version = "0.13.2";
-            src = pkgs.fetchFromGitHub {
-              owner = "typelevel";
-              repo = "kind-projector";
-              rev = "v0.13.2";
-              sha256 = "sha256-k1ApAr22yjW1HMA56O4+QVM1qirYzmX0uSxc8lGyyyE=";
+          typelevel.kind-projector =
+            let version = "0.13.2"; in
+            pkgs.scala-tools.mkScalacDerivation {
+              pname = "kind-projector";
+              inherit version;
+              src = pkgs.fetchFromGitHub {
+                owner = "typelevel";
+                repo = "kind-projector";
+                rev = "v${version}";
+                sha256 = "sha256-k1ApAr22yjW1HMA56O4+QVM1qirYzmX0uSxc8lGyyyE=";
+              };
+              sourceDirectories = [
+                "src/main/scala"
+                "src/main/scala-newParser"
+                "src/main/scala-newReporting"
+              ];
+              resourceDirectories = [ "src/main/resources" ];
             };
-            sourceDirectories = [
-              "src/main/scala"
-              "src/main/scala-newParser"
-              "src/main/scala-newReporting"
-            ];
-            resourceDirectories = [ "src/main/resources" ];
-          };
+
+          typelevel.cats-effect =
+            let
+              version = "3.3.14";
+              src = pkgs.fetchFromGitHub {
+                owner = "typelevel";
+                repo = "cats-effect";
+                rev = "v${version}";
+                sha256 = "sha256-AYZSfSHEZCeADR1e/oSbP26CWC6KG0T9XD1yhGT9ITY=";
+              };
+            in
+            rec {
+              kernel = pkgs.scala-tools.mkScalacDerivation {
+                pname = "cats-effect-kernel";
+                inherit version src;
+                sourceDirectories = [
+                  "kernel/jvm/src/main/scala"
+                  "kernel/shared/src/main/scala"
+                ];
+                buildInputs = [ registry.typelevel.cats-core.fromSource ];
+                compilerPlugins = [ registry.typelevel.kind-projector ];
+              };
+              std = pkgs.scala-tools.mkScalacDerivation {
+                pname = "cats-effect-std";
+                inherit version src;
+                sourceDirectories = [
+                  "std/jvm/src/main/scala"
+                  "std/shared/src/main/scala"
+                ];
+                buildInputs = [ kernel ];
+                compilerPlugins = [ registry.typelevel.kind-projector ];
+              };
+              core = pkgs.scala-tools.mkScalacDerivation {
+                pname = "cats-effect";
+                inherit version src;
+                sourceDirectories = [
+                  "core/jvm/src/main/java"
+                  "core/jvm/src/main/scala"
+                  "core/shared/src/main/scala"
+                  "core/shared/src/main/scala-2"
+                ];
+                buildInputs = [ kernel std ];
+                compilerPlugins = [ registry.typelevel.kind-projector ];
+              };
+            };
         };
 
       in
       {
-        packages.default = pkgs.scala-tools.mkScalaApp {
+        packages.default = registry.typelevel.cats-effect.core;
+        packages.default2 = pkgs.scala-tools.mkScalaApp {
           package = pkgs.scala-tools.mkScalacDerivation {
             pname = "example";
             version = "0.0.0";
@@ -181,7 +228,7 @@
             sourceDirectories = [ "." ];
             buildInputs = [
               registry.polyvariant.colorize-scala
-              registry.typelevel.cats-core.fromSource
+              registry.typelevel.cats-effect.core
             ];
           };
           mainClass = "example.Main";

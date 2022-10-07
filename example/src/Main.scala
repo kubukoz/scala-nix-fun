@@ -1,9 +1,12 @@
 package example
-object Main {
-  import org.polyvariant.colorize._
-  import cats.implicits._
-  def main(args: Array[String]): Unit = {
-    println(colorize"hello".red.render)
-    println(1 |+| 10)
+
+import org.polyvariant.colorize._
+import cats.implicits._
+import cats.effect._
+
+object Main extends IOApp.Simple {
+  def run = {
+    IO.println(colorize"hello".red.render) *>
+      IO.println(1 |+| 10)
   }
 }
