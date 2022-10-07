@@ -28,7 +28,7 @@ let
 
       finalArgs = {
         name = "${pname}-${version}";
-        buildInputs = [ pkgs.jdk pkgs.scala pkgs.strip-nondeterminism ];
+        buildInputs = [ pkgs.scala pkgs.strip-nondeterminism ];
         # todo rename arg
         propagatedBuildInputs = buildInputs;
 
@@ -82,7 +82,7 @@ let
       src = builtins.fetchurl {
         inherit url sha256;
       };
-      buildInputs = [ pkgs.jdk ];
+      buildInputs = [ pkgs.jre ];
       inherit propagatedBuildInputs;
       buildPhase = ''
         mkdir -p $out/share/java
