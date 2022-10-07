@@ -49,7 +49,7 @@
 
         registry = {
           polyvariant.colorize-scala =
-            let version = "0.1.1"; in
+            let version = "0.2.0"; in
             pkgs.scala-tools.mkScalacDerivation {
               pname = "colorize-scala";
               inherit version;
@@ -57,7 +57,7 @@
                 owner = "polyvariant";
                 repo = "colorize-scala";
                 rev = "v${version}";
-                sha256 = "sha256-McQpZeufOKcT9IZEJc8PN0X+Fe0iMBH5TAdBj1oJ1K4=";
+                sha256 = "sha256-eZaoqHLBcXGa4uvi/6yeJlcyVyhlaEE+YlSkcKkh4cQ=";
               };
               sourceDirectories = [ "core/shared/src/main/scala" ];
               scalacOptions = sbt-typelevel-defaults."2.13";
