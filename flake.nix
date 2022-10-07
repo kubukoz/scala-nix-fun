@@ -48,18 +48,20 @@
         };
 
         registry = {
-          polyvariant.colorize-scala = pkgs.scala-tools.mkScalacDerivation {
-            pname = "colorize-scala";
-            version = "0.2.0";
-            src = pkgs.fetchFromGitHub {
-              owner = "polyvariant";
-              repo = "colorize-scala";
-              rev = "v0.2.0";
-              sha256 = "sha256-eZaoqHLBcXGa4uvi/6yeJlcyVyhlaEE+YlSkcKkh4cQ=";
+          polyvariant.colorize-scala =
+            let version = "0.1.1"; in
+            pkgs.scala-tools.mkScalacDerivation {
+              pname = "colorize-scala";
+              inherit version;
+              src = pkgs.fetchFromGitHub {
+                owner = "polyvariant";
+                repo = "colorize-scala";
+                rev = "v${version}";
+                sha256 = "sha256-McQpZeufOKcT9IZEJc8PN0X+Fe0iMBH5TAdBj1oJ1K4=";
+              };
+              sourceDirectories = [ "core/shared/src/main/scala" ];
+              scalacOptions = sbt-typelevel-defaults."2.13";
             };
-            sourceDirectories = [ "core/shared/src/main/scala" ];
-            scalacOptions = sbt-typelevel-defaults."2.13";
-          };
 
           typelevel.cats-kernel =
             let
