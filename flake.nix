@@ -69,6 +69,7 @@
                 "plugin/src/main/scala-2"
               ];
               resourceDirectories = [ "plugin/src/main/resources" ];
+              scalacOptions = sbt-typelevel-defaults."2.13";
             };
 
           polyvariant.colorize-scala =
@@ -103,6 +104,7 @@
                     ./boiler/KernelBoilerMain.scala
                     "project/KernelBoiler.scala"
                   ];
+                  scalacOptions = sbt-typelevel-defaults."2.13";
                 }
                 ;
                 mainClass = "KernelBoilerMain";
@@ -152,6 +154,7 @@
                         "project/TupleShowInstancesBoiler.scala"
                         "project/TupleUnorderedFoldableInstancesBoiler.scala"
                       ];
+                      scalacOptions = sbt-typelevel-defaults."2.13";
                     };
                     mainClass = "CoreBoilerMain";
                   };
@@ -196,6 +199,7 @@
                 "src/main/scala-newReporting"
               ];
               resourceDirectories = [ "src/main/resources" ];
+              scalacOptions = sbt-typelevel-defaults."2.13";
             };
 
           typelevel.cats-effect =
@@ -220,6 +224,7 @@
                 ];
                 buildInputs = [ registry.typelevel.cats-core.fromSource ];
                 compilerPlugins = [ registry.typelevel.kind-projector ];
+                scalacOptions = sbt-typelevel-defaults."2.13";
               };
               std = pkgs.scala-tools.mkScalacDerivation {
                 pname = "cats-effect-std";
@@ -231,6 +236,7 @@
                 ];
                 buildInputs = [ kernel ];
                 compilerPlugins = [ registry.typelevel.kind-projector ];
+                scalacOptions = sbt-typelevel-defaults."2.13";
               };
               core = pkgs.scala-tools.mkScalacDerivation {
                 pname = "cats-effect";
@@ -243,6 +249,7 @@
                 ];
                 buildInputs = [ kernel std ];
                 compilerPlugins = [ registry.typelevel.kind-projector ];
+                scalacOptions = sbt-typelevel-defaults."2.13";
               };
             };
           scala.collection-compat.binary = pkgs.scala-tools.fetchMavenArtifact {
@@ -253,11 +260,11 @@
             sha256 = "sha256:1704dq8x3agad1rv1i72fy3zwmfnk4j3hl0rfpz16n5bil1cd34v";
           };
           smithy4s.core.binary = pkgs.scala-tools.fetchMavenArtifact {
-            version = "0.16.2";
+            version = "0.16.3";
             pname = "smithy4s-core";
             artifact = "smithy4s-core_2.13";
             org = [ "com" "disneystreaming" "smithy4s" ];
-            sha256 = "sha256:0lgx2xqlhm3zs8ildcn9c31ynj7dfqyrccnd44zc6ybxs8l5hk3d";
+            sha256 = "sha256:1lql881lhsqa8j1b4j41kc0jnpm1prnlv5l9m93garb0dvwq9km8";
             propagatedBuildInputs = [
               registry.scala.collection-compat.binary
             ];
@@ -287,6 +294,7 @@
             compilerPlugins = [
               registry.polyvariant.better-tostring
             ];
+            scalacOptions = sbt-typelevel-defaults."2.13";
           };
           mainClass = "example.Main";
         };
