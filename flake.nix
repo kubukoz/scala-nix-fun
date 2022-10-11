@@ -178,12 +178,12 @@
 
           typelevel.cats-effect =
             let
-              version = "3.4.0-RC1";
+              version = "3.4.0-RC2";
               src = pkgs.fetchFromGitHub {
                 owner = "typelevel";
                 repo = "cats-effect";
                 rev = "v${version}";
-                sha256 = "sha256-KMkTrpzLgZVh72HWW+D9/v/FSvx2QV2CGJ+5Prm/j/M=";
+                sha256 = "sha256-IU2cWyQTzzJavd0+L4Nc/N+U8m3RlRP17Rtj2FJ6sck";
               };
             in
             rec {
