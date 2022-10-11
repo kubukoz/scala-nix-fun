@@ -53,6 +53,24 @@
         };
 
         registry = {
+          polyvariant.better-tostring =
+            let version = "0.3.17"; in
+            pkgs.scala-tools.mkScalacDerivation {
+              pname = "better-tostring";
+              inherit version;
+              src = pkgs.fetchFromGitHub {
+                owner = "polyvariant";
+                repo = "better-tostring";
+                rev = "v${version}";
+                sha256 = "sha256-EFG/vdKrgoUMScQ1tg0ruXFqbT3D5XyZc7b9UT/spe8=";
+              };
+              sourceDirectories = [
+                "plugin/src/main/scala"
+                "plugin/src/main/scala-2"
+              ];
+              resourceDirectories = [ "plugin/src/main/resources" ];
+            };
+
           polyvariant.colorize-scala =
             let version = "0.3.2"; in
             pkgs.scala-tools.mkScalacDerivation {
@@ -69,6 +87,7 @@
                 "core/jvm-native/src/main/scala"
               ];
               scalacOptions = sbt-typelevel-defaults."2.13";
+              compilerPlugins = [ registry.polyvariant.better-tostring ];
             };
 
           typelevel.cats-kernel =
@@ -260,12 +279,14 @@
                 specs = [ ./example/smithy ];
               })
             ];
-            buildInputs =
-              [
-                registry.polyvariant.colorize-scala
-                registry.typelevel.cats-effect.core
-                registry.smithy4s.core.binary
-              ];
+            buildInputs = [
+              registry.polyvariant.colorize-scala
+              registry.typelevel.cats-effect.core
+              registry.smithy4s.core.binary
+            ];
+            compilerPlugins = [
+              registry.polyvariant.better-tostring
+            ];
           };
           mainClass = "example.Main";
         };
