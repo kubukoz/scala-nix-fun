@@ -44,12 +44,12 @@
             "-J-Xmx1G"
           ];
         };
-        catsVersion = "2.8.0";
+        catsVersion = "2.9.0";
         cats-src = pkgs.fetchFromGitHub {
           owner = "typelevel";
           repo = "cats";
           rev = "v${catsVersion}";
-          sha256 = "sha256-/oplCnPUS+MMF0L/bE6DVKVTmEmhlJZJqM7iPrbJLxE=";
+          sha256 = "sha256-L77puIa3+Dnzkg9vsOV7reaalyB+puOYUpzm7xA877k";
         };
 
         registry = {
@@ -131,7 +131,7 @@
                 pname = "cats-core";
                 artifact = "cats-core_2.13";
                 org = [ "org" "typelevel" ];
-                sha256 = "sha256:0shl38abiywr6mcdw3vfj7ck45fsqn0l6s2ypqpz100wfx1b55rk";
+                sha256 = "0njnf0w63l91ix7kpd27y9w3ki13phghm5dj5185rskxk14ynjqs";
                 propagatedBuildInputs = [
                   registry.typelevel.cats-kernel
                 ];
@@ -204,12 +204,12 @@
 
           typelevel.cats-effect =
             let
-              version = "3.4.0-RC2";
+              version = "3.4.1";
               src = pkgs.fetchFromGitHub {
                 owner = "typelevel";
                 repo = "cats-effect";
                 rev = "v${version}";
-                sha256 = "sha256-IU2cWyQTzzJavd0+L4Nc/N+U8m3RlRP17Rtj2FJ6sck";
+                sha256 = "sha256-UpbSmePobnShhiJrV0GN6bxqosaX9YPEYPvRRfykLbY";
               };
             in
             rec {
@@ -260,11 +260,11 @@
             sha256 = "sha256:1704dq8x3agad1rv1i72fy3zwmfnk4j3hl0rfpz16n5bil1cd34v";
           };
           smithy4s.core.binary = pkgs.scala-tools.fetchMavenArtifact {
-            version = "0.16.3";
+            version = "0.16.10";
             pname = "smithy4s-core";
             artifact = "smithy4s-core_2.13";
             org = [ "com" "disneystreaming" "smithy4s" ];
-            sha256 = "sha256:1lql881lhsqa8j1b4j41kc0jnpm1prnlv5l9m93garb0dvwq9km8";
+            sha256 = "02z651q6prw0rbrs0q0fwsazxbl264vibm0zy7aaipdqj5a9fnpl";
             propagatedBuildInputs = [
               registry.scala.collection-compat.binary
             ];
