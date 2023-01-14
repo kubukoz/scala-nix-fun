@@ -298,6 +298,8 @@
           };
           mainClass = "example.Main";
         };
+
+        checks = self.packages.${system};
       }
     );
 }

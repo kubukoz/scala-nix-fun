@@ -10,5 +10,3 @@ jobs:
     uses: nixbuild/nixbuild-action/.github/workflows/ci-workflow.yml@v15
     secrets:
       nixbuild_ssh_key: ${{ secrets.nixbuild_ssh_key }}
-    with:
-      filter_builds: '.top_attr == "build"'
