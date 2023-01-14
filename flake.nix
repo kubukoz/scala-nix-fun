@@ -6,6 +6,7 @@
   inputs.smithy4s-nix.inputs.flake-utils.follows = "flake-utils";
 
   outputs = { self, nixpkgs, flake-utils, smithy4s-nix, ... }@inputs:
+
     flake-utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ] (
       system:
       let
